@@ -58,7 +58,7 @@ if [ $TRACE = 1 ]; then
     log "Time Profiler trace: $t"
     rm -rf "traces/$t.trace"
     xcrun xctrace record --template 'Time Profiler' --device "$DEVICE" --time-limit 15s \
-      --output "traces/$t.trace" --launch -- "$APP" "${args[@]}" > "logs/trace-$t.log" 2>&1 || true
+      --output "traces/$t.trace" --launch -- "$APP" ${args[@]+"${args[@]}"} > "logs/trace-$t.log" 2>&1 || true
     xcrun xctrace export --input "traces/$t.trace" \
       --xpath '/trace-toc/run[@number="1"]/data/table[@schema="time-profile"]' > "traces/$t.xml"
     python3 scripts/trace_breakdown.py "traces/$t.xml" | head -40
