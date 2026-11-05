@@ -10,7 +10,7 @@ Adding ~2000 child view controllers in one runloop turn hangs the main thread fo
 ## Steps
 1. `brew install xcodegen && xcodegen`
 2. Open `HangRepro.xcodeproj`, set your team, run on a device (Release).
-3. ~1 s after launch the app adds 2000 child VCs. The clock label freezes for the length of the hang, then resumes and the status shows the time taken.
+3. ~3 s after launch the app adds 2000 child VCs. The clock label freezes for the length of the hang, then resumes and the status shows the time taken.
 4. Relaunch so the hang event is sent. Control: launch with `-nosentry`.
 
 ### Automated (connected iPhone)
