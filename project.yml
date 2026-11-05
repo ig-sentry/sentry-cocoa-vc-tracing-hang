@@ -1,0 +1,16 @@
+name: HangRepro
+options: { bundleIdPrefix: com.example, deploymentTarget: { iOS: "17.0" } }
+packages: { Sentry: { url: https://github.com/getsentry/sentry-cocoa, exactVersion: 9.32.0 } }
+targets:
+  HangRepro:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    dependencies: [{ package: Sentry, product: Sentry }]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.hangrepro
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        SWIFT_VERSION: "5.0"
+        DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
