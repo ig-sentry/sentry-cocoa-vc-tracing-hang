@@ -10,8 +10,22 @@ Adding ~2000 child view controllers in one runloop turn hangs the main thread fo
 ## Steps
 1. `brew install xcodegen && xcodegen`
 2. Open `HangRepro.xcodeproj`, set your team, run on a device (Release).
-3. Wait ~1 s after launch, then relaunch so the hang event is sent.
-4. Control: launch with `-nosentry`.
+3. ~1 s after launch the app adds 2000 child VCs. The clock label freezes for the length of the hang, then resumes and the status shows the time taken.
+4. Relaunch so the hang event is sent. Control: launch with `-nosentry`.
+
+### Automated (connected iPhone)
+```
+TEAM=<your team id> BUNDLE_ID=com.you.hangrepro scripts/run.sh        # build, install, 3 runs, replay run, -nosentry control
+TEAM=... scripts/run.sh -n 5 -t                                       # 5 runs + Time Profiler traces into traces/
+```
+The replay run keeps the app in the foreground for 60 s after the hang, backgrounds it (opens Settings) for 30 s, then relaunches so the replay and hang events upload. Logs go to `logs/`.
+
+### Upload debug symbols (with sources, for symbolicated stacks and source context)
+```
+export SENTRY_AUTH_TOKEN=<org token with org:ci>
+sentry-cli debug-files upload --org sentry-sn0 --project 4512377547390976 --include-sources \
+  build/Build/Products/Release-iphoneos/HangRepro.app.dSYM
+```
 
 ## Expected
 No hang (adding 2000 child VCs takes ~0.3 s without Sentry).
